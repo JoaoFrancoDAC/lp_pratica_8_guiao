@@ -17,6 +17,13 @@ public class TestContaBancaria {
     }
 
     @Test
+    void construtorDefineSaldoInicialNegativo() {
+        ContaBancaria conta = new ContaBancaria(-100);
+
+        assertEquals("-100", conta.getSaldo());
+    }
+
+    @Test
     void depositarSaldoPositivo(){
         ContaBancaria conta = new ContaBancaria(100);
 
@@ -31,6 +38,15 @@ public class TestContaBancaria {
 
         assertEquals("100", conta.getSaldo());
         conta.depositar(-20);
+        assertEquals("100", conta.getSaldo());
+    }
+
+    @Test
+    void levantarPositivo(){
+        ContaBancaria conta = new ContaBancaria(100);
+
+        assertEquals("100", conta.getSaldo());
+        assertTrue(  conta.levantar(20));
         assertEquals("80", conta.getSaldo());
     }
 
@@ -58,4 +74,29 @@ public class TestContaBancaria {
 
         assertEquals(false, conta.levantar(-3), "Deveria devolver false mas devolve true");
     };
+
+    @Test
+    void levantarNegativoErroboolean(){
+        ContaBancaria conta = new ContaBancaria(100);
+
+        assertEquals("100", conta.getSaldo());
+        assertFalse(  conta.levantar(-20));
+    }
+
+    @Test
+    void levantarNegativoErroNaoPermite(){//erro da mas mexe no valor do saldo na mesma
+        ContaBancaria conta = new ContaBancaria(100);
+
+        assertEquals("100", conta.getSaldo());
+        assertTrue(  conta.levantar(-20));
+        assertEquals("100", conta.getSaldo());
+    }
+    @Test
+    void levantarPositivoMaiorSaldo(){//erro da mas mexe no valor do saldo na mesma
+        ContaBancaria conta = new ContaBancaria(100);
+
+        assertEquals("100", conta.getSaldo());
+        assertFalse(  conta.levantar(120));
+        assertEquals("100", conta.getSaldo());
+    }
 }
