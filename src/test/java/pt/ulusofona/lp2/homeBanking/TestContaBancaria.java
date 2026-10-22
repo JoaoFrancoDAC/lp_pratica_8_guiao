@@ -28,9 +28,6 @@ public class TestContaBancaria {
     public void testConstrutorPositivo() {
         ContaBancaria conta = new ContaBancaria(100);
 
-
-        //boolean sucesso = conta.levantar(150);
-
         assertEquals("100", conta.getSaldo(), "O saldo deve ser 100");
     }
 
@@ -42,16 +39,38 @@ public class TestContaBancaria {
     }
 
     @Test
-    public void testTransferencia() {
-        ContaBancaria conta = new ContaBancaria(100);
-        ContaBancaria seguntaConta = new ContaBancaria(100);
+    public void testDepositarZero(){
+        ContaBancaria conta = new ContaBancaria(10);
+        conta.depositar(0);
 
 
-
-
-
-        assertEquals("100", conta.getSaldo(), "O saldo deve ser 100");
+        assertEquals("10", conta.getSaldo(), "Depositar 0 não deveria alterar nada");
     }
+
+    @Test
+    public void testTransferencia_Taxa(){
+        ContaBancaria conta = new ContaBancaria(2);
+        ContaBancaria segundaConta = new ContaBancaria(100);
+
+        boolean deveSerFalso = conta.transferirPara(segundaConta, 1);
+        assertFalse(deveSerFalso);
+
+        assertEquals("2", conta.getSaldo(), "O saldo deve ser 2, a transferencia deve falhar");
+        assertEquals("100", segundaConta.getSaldo(), "O saldo deve permanecer 100");
+
+    }
+
+    @Test
+    public void testTransferencia_ForaDosLimites() {
+        ContaBancaria conta = new ContaBancaria(100);
+        ContaBancaria segundaConta = new ContaBancaria(100);
+
+        conta.transferirPara(segundaConta,99);
+
+        assertEquals("100", conta.getSaldo(), "O saldo deve ser 100 pois a transferencia deveria falhar, mas nao falha");
+        assertEquals("100", segundaConta.getSaldo(), "O saldo deve ser 100");
+    }
+
 
 
     @Test
